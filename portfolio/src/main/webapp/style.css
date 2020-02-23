@@ -3,7 +3,42 @@
   margin-right: auto;
   width: 650px;
 }
-
-#greeting-container {
-  margin-top: 20px;
+#sidebar a{
+  color: #0000cc;
+  text-decoration: none;
 }
+#top_row h1{
+  color: #3F7C9D;
+  font-size: 3.75em;
+  letter-spacing: -2px;
+}
+#top_row h3{
+  font-size: 1.125em;
+  font-weight: bold;
+  
+}
+#bio{
+  color: #0000cc;
+  text-decoration: none;
+}
+div.polaroid {
+  width: 80%;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#polaroid img{
+    width: 100%;
+    height: auto;
+}
+/*
+img {width: 100%;
+     height: auto;}
+    */
+div.container {
+  text-align: center;
+  padding: 10px 20px;
+}
+
+
+
