@@ -17,7 +17,7 @@
  */
 function addRandomGreeting() {
   const greetings =
-      ['Best Lawyer ever', 'Its Gonna be legendary', 'The North remembers', 'The kevlar of knowing the answer'];
+      ["I'll be the best Lawyer ever - Mike Ross", "It's gonna be legendary - Barney Stinson", 'The North remembers -Ayra Stark', 'The kevlar of knowing the answer - Bobby Axelrod'];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
