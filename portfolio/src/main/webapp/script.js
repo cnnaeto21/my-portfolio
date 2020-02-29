@@ -28,10 +28,33 @@ function addRandomGreeting() {
 }
 
 function addRandomNameGreeting(){
-    console.log("Fetching a randome greeting with a name   ");
+    console.log("Fetching a random greeting with a name   ");
     fetch("/data").then(response => response.text()).then((name) => {
         document.getElementById('name-container').innerText = name;
     });
 
 }
+
+function postComments() {
+    fetch('/data').then(response => response.json()).then((comments) => {
+      const commentsListElement = document.getElementById('comments-container');
+        console.log(comments);
+        commentsListElement.innerHTML = '';
+        commentsListElement.appendChild(
+            createListElement('Comment ' + comments));
+        commentsListElement.appendChild(
+            createListElement('Comment: ' + comments));
+        commentsListElement.appendChild(
+            createListElement('Comment: ' + comments));
+        });
+
+}
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}
+
+
+
 
