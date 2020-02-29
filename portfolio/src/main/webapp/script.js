@@ -40,21 +40,20 @@ function postComments() {
       const commentsListElement = document.getElementById('comments-container');
         console.log(comments);
         commentsListElement.innerHTML = '';
-        commentsListElement.appendChild(
-            createListElement('Comment ' + comments));
-        commentsListElement.appendChild(
-            createListElement('Comment: ' + comments));
-        commentsListElement.appendChild(
-            createListElement('Comment: ' + comments));
-        });
-
+        comments.forEach(commentsListElement.appendChild(createListElement("Comment ")));
+    });
 }
+        
+        // commentsListElement.appendChild(
+        //     createListElement('Comment ' + comments()));
+        // commentsListElement.appendChild(
+        //     createListElement('Comment: ' + comments));
+        // commentsListElement.appendChild(
+        //     createListElement('Comment: ' + comments));
+        // 
+
 function createListElement(text) {
   const liElement = document.createElement('li');
   liElement.innerText = text;
   return liElement;
 }
-
-
-
-

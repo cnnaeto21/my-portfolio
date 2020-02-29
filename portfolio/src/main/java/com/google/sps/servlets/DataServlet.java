@@ -27,16 +27,18 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   private List<String> names;
+
   private List<String> messages;
+
   @Override
   public void init(){
     names = new ArrayList<>();
     names.add("Obi");
 
     messages = new ArrayList<>();
-    messages.add("Hello! How are you");
-    messages.add("You got this!");
-    messages.add("Nice to meet you.");
+    //messages.add("Hello! How are you");
+    //messages.add("You got this!");
+    //messages.add("Nice to meet you.");
   }
 
   @Override
@@ -53,7 +55,19 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(json);
 
   }
-  private String convertToJsonUsingGson( List<String> words) {
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      String comment = request.getParameter("comment");
+      String mood = request.getParameter("mood");
+      messages.add(comment);
+      response.setContentType("text/html");
+      response.getWriter().println("<p>Comment: " + comment + "</p>");
+      response.getWriter().println("<p>Mood?: " + mood + "</p>");
+  }
+
+
+  static String convertToJsonUsingGson( List<String> words) {
     Gson gson = new Gson();
     String json = gson.toJson(words);
     return json;
