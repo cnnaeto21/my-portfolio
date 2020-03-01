@@ -14,9 +14,14 @@
 
 package com.google.sps.servlets;
 
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.Gson;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,15 +31,53 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   private List<String> names;
+
+  private List<String> messages;
+
   @Override
   public void init(){
     names = new ArrayList<>();
     names.add("Obi");
+
+    messages = new ArrayList<>();
+    //messages.add("Hello! How are you");
+    //messages.add("You got this!");
+    //messages.add("Nice to meet you.");
   }
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String name = names.get(0);
-    response.setContentType("text/html;");
-    response.getWriter().println("Hello " + name + ". Welcome to JavaServlets");
+
+    //response.setContentType("text/html;");
+    //response.getWriter().println("Hello " + name + ". Welcome to JavaServlets");
+    
+    //ArrayList current = messages;
+    String json = convertToJsonUsingGson(messages);
+
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
+
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      String comment = request.getParameter("comment");
+      String mood = request.getParameter("mood");
+      messages.add(comment);
+      
+      Entity commentEntity = new Entity("Comment");
+      commentEntity.setProperty("Comment", comment);
+      commentEntity.setProperty("Mood", mood);
+
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      datastore.put(commentEntity);
+  }
+
+
+  static String convertToJsonUsingGson( List<String> words) {
+    Gson gson = new Gson();
+    String json = gson.toJson(words);
+    return json;
   }
 }

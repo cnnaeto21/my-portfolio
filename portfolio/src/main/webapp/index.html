@@ -45,13 +45,35 @@
       </ul>
     </div>
 
-      <p>Click here to get a quote from some of my favorite tv shows :) :</p>
-      <button onclick="addRandomGreeting()">Change Quote</button>
-      <div id="greeting-container"></div>
+    <p>Click here to get a quote from some of my favorite tv shows :) :</p>
+    <button onclick="addRandomGreeting()">Change Quote</button>
+    <div id="greeting-container"></div>
+    
+    
+    <p> Click here to get a random greeting with your name! </p>
+    <button onclick = "addRandomNameGreeting()">Change Greeting</button>
+    <div id = "name-container"></div>
 
-      <p> Click here to get a random greeting with your name! </p>
-      <button onclick = "addRandomNameGreeting()">Change Greeting</button>
-      <div id = "name-container"></div>
+
+    <p>Comments</p>
+    <form action="/data" method="POST">
+     <input type="text" name="comment" placeholder="Post a nice comment :)"/>
+    <br/><br/>
+    <select name="mood">
+        <option value="Happy">Happy</option>
+        <option value="Perplexed">Perplexed</option>
+        <option value="Motivated">Motivated</option>
+    </select>
+    <br/><br/>
+    <input type="submit"/>
+    </form>
+
+
+    <button onclick = "postComments()">Post comments</button>
+    <ul id = "comments-container"></ul>
+
+
+
 
       <h2>Here are a few of my favorite interviews with my favorite actors</h2>
         <ul>
