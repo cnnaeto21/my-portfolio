@@ -38,22 +38,21 @@ function addRandomNameGreeting(){
 function postComments() {
     fetch('/data').then(response => response.json()).then((comments) => {
       const commentsListElement = document.getElementById('comments-container');
-        console.log(comments);
-        commentsListElement.innerHTML = '';
-        comments.forEach(commentsListElement.appendChild(createListElement("Comment ")));
+        comments.forEach((comment) => {
+        //commentsListElement.innerHTML = '';
+            commentsListElement.appendChild(createListElement(comment));
+        })
     });
 }
         
-        // commentsListElement.appendChild(
-        //     createListElement('Comment ' + comments()));
-        // commentsListElement.appendChild(
-        //     createListElement('Comment: ' + comments));
-        // commentsListElement.appendChild(
-        //     createListElement('Comment: ' + comments));
-        // 
-
-function createListElement(text) {
+function createListElement(comment) {
   const liElement = document.createElement('li');
-  liElement.innerText = text;
+  commentElement.className = 'comment';
+
+  const titleElement = document.createElement('span');
+  titleElement.innerText = comment.comment;
+  liElement.innerText = comment;
+  taskElement.appendChild(titleElement);
+  
   return liElement;
 }
