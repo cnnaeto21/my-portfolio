@@ -37,6 +37,7 @@ public class DataServlet extends HttpServlet {
   private List<String> names;
 
   private List<String> messages;
+  private List<Comment> allComments;
 
   @Override
   public void init(){
@@ -45,39 +46,39 @@ public class DataServlet extends HttpServlet {
 
     messages = new ArrayList<>();
     messages.add("Hello! How are you");
-    //messages.add("You got this!");
-    //messages.add("Nice to meet you.");
+
+    allComments = new ArrayList<>();
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String name = names.get(0);
 
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    Query query = new Query("Comment");
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
-      String whatSaid = (String) entity.getProperty("comment");
-      String mood = (String) entity.getProperty("mood");
-      long timestamp = (Long) entity.getProperty("timestamp");
+      String whatSaid = (String) entity.getProperty("Comment");
+      String mood = (String) entity.getProperty("Mood");
+      //long timestamp = (Long) entity.getProperty("timestamp");
       
-      Comment comment = new Comment(id, whatSaid, mood, timestamp);
-      //messages.add(comment);
+      Comment newComment = new Comment(id, whatSaid, mood);
+      allComments.add(newComment);
     }
-    
-    String json = convertToJsonUsingGson(messages);
+    response.getWriter().println(allComments);
+
+
+    String json = convertToJsonUsingGson(allComments);
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      String word = request.getParameter("comment");
-      String mood = request.getParameter("mood");
-      messages.add(word);
+      String word = request.getParameter("Comment");
+      String mood = request.getParameter("Mood");
       
       Entity commentEntity = new Entity("Comment");
       commentEntity.setProperty("Comment", word);
@@ -85,10 +86,12 @@ public class DataServlet extends HttpServlet {
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(commentEntity);
+
+      response.sendRedirect("/index.html");
   }
 
 
-  static String convertToJsonUsingGson( List<String> words) {
+  static String convertToJsonUsingGson( List<Comment> words) {
     Gson gson = new Gson();
     String json = gson.toJson(words);
     return json;

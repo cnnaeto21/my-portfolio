@@ -5,12 +5,12 @@ public final class Comment  {
   private final long id;
   private final String words;
   private final String  mood;
-  private final long timestamp;
+  //private final long timestamp;
 
-  public Comment(long id, String words, String mood, long timestamp) {
+  public Comment(long id, String words, String mood) {
     this.id = id;
     this.words = words;
     this.mood = mood;
-    this.timestamp = timestamp;
+    //this.timestamp = timestamp;
   }
 }
