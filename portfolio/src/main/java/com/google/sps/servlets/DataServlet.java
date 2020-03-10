@@ -73,6 +73,33 @@ public class DataServlet extends HttpServlet {
     String json = convertToJsonUsingGson(allComments);
     response.setContentType("application/json;");
     response.getWriter().println(json);
+
+    private LinkedHashMap<Integer, Integer> bigfootSightings = new LinkedHashMap<>();
+
+  @Override
+  public void init() {
+    Scanner scanner = new Scanner(getServletContext().getResourceAsStream(
+        "/WEB-INF/pit---april-2018-scheduled-traffic-report-reformatted.csv"));
+    while (scanner.hasNextLine()) {
+      String line = scanner.nextLine();
+      String[] cells = line.split(",");
+
+      Integer year = Integer.valueOf(cells[0]);
+      Integer sightings = Integer.valueOf(cells[1]);
+
+      DataServlet.put(year, sightings);
+    }
+    scanner.close();
+  }
+
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setContentType("application/json");
+    Gson gson = new Gson();
+    String json = gson.toJson(bigfootSightings);
+    response.getWriter().println(json);
+  }
+}
   }
 
   @Override

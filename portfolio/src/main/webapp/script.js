@@ -16,8 +16,6 @@
  * Adds a random greeting to the page.
  */
 
-
- 
 function addRandomGreeting() {
   const greetings =
       ["I'll be the best Lawyer ever - Mike Ross", "It's gonna be legendary - Barney Stinson", 'The North remembers -Ayra Stark', 'The kevlar of knowing the answer - Bobby Axelrod'];
@@ -59,6 +57,28 @@ function createCommentElement(comment) {
   return commentElement;
 }
 
+google.charts.setOnLoadCallback(drawChart);
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+    ['Time Spent Training(days)', 'Mile Time'],
+    [3, 14], [5, 10], [7, 7], [9, 5], [11, 4]
+ ]);
+
+  var options = {
+    title: 'Mile time by number of days trained',
+    hAxis: {title: 'Days', minValue: 0, maxValue: 3},
+    vAxis: {title: 'Time', minValue: 0, maxValue: 2100},
+    trendlines: {
+      0: {
+        type: 'exponential',
+        visibleInLegend: true,
+      }
+    }
+  };
+
+  var chart = new google.visualization.ScatterChart(document.getElementById('chart-container'));
+  chart.draw(data, options);
+}
 
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
