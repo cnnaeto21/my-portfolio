@@ -5,8 +5,9 @@
     <title>My Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
   </head>
-  <body>
+  <body onload="postComments()" data-gr-c-s-loaded="true">
     <div id= "content">
      <div id = "top_row">
         <header>
@@ -40,18 +41,34 @@
         <h2> Projects </h2>
         <h4> Here a few projects I have worked on</h4>
         <ul>
-            <li><a href = 'https://github.com/cnnaeto21/15-112-Term-Project'> Red Light Green Light</a></li>
-            <li><a href = 'https://github.com/cnnaeto21/my-portfolio'> Google SPS Portfolio</a></li>
+            <li><a href='https://github.com/cnnaeto21/15-112-Term-Project'>Red Light Green Light</a></li>
+            <li><a href='https://github.com/cnnaeto21/my-portfolio'>Google SPS Portfolio</a></li>
       </ul>
     </div>
 
-      <p>Click here to get a quote from some of my favorite tv shows :) :</p>
-      <button onclick="addRandomGreeting()">Change Quote</button>
-      <div id="greeting-container"></div>
+    <p>Click here to get a quote from some of my favorite tv shows :) :</p>
+    <button onclick="addRandomGreeting()">Change Quote</button>
+    <div id="greeting-container"></div>
+    
+    
+    <p> Click here to get a random greeting with your name! </p>
+    <button onclick = "addRandomNameGreeting()">Change Greeting</button>
+    <div id = "name-container"></div>
 
-      <p> Click here to get a random greeting with your name! </p>
-      <button onclick = "addRandomNameGreeting()">Change Greeting</button>
-      <div id = "name-container"></div>
+
+    <p>Comments</p>
+    <form method="POST" action="data">
+     <input type="text" name="comment" placeholder="Post a nice comment :)"/>
+        <br/><br/>
+        <select name="mood">
+            <option value="Happy">Happy</option>
+            <option value="Perplexed">Perplexed</option>
+            <option value="Motivated">Motivated</option>
+        </select>
+        <br/><br/>
+        <input type="submit"/>
+    </form>
+    <ul id="comments-container"></ul>
 
       <h2>Here are a few of my favorite interviews with my favorite actors</h2>
         <ul>
@@ -59,6 +76,8 @@
             <li><a href = "https://www.youtube.com/watch?v=XKzkiP8-1GU&t=30s"> Matthew McConaughey</a></li> 
             <li><a href =  "https://www.youtube.com/watch?v=SFMhpLiLgWo"> Anne Hathaway</a></li>
         </ul>
+        <h1>Favorite NBA Players</h1>
+        <div id="chart-container"></div>
     </div>
     </div>
   </body>

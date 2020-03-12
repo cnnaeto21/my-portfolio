@@ -15,6 +15,7 @@
 /**
  * Adds a random greeting to the page.
  */
+
 function addRandomGreeting() {
   const greetings =
       ["I'll be the best Lawyer ever - Mike Ross", "It's gonna be legendary - Barney Stinson", 'The North remembers -Ayra Stark', 'The kevlar of knowing the answer - Bobby Axelrod'];
@@ -28,10 +29,77 @@ function addRandomGreeting() {
 }
 
 function addRandomNameGreeting(){
-    console.log("Fetching a randome greeting with a name   ");
+    console.log("Fetching a random greeting with a name   ");
     fetch("/data").then(response => response.text()).then((name) => {
         document.getElementById('name-container').innerText = name;
     });
 
 }
 
+function postComments() {
+  fetch('data').then(response => response.json()).then((comments) => {
+    console.log(comments)
+    const commentListElement = document.getElementById('comment-container');
+    comments.forEach((comment) => {
+      commentListElement.appendChild(createCommentElement(comment));
+    })
+  });
+}
+
+/** Creates an element that represents a task, including its delete button. */
+function createCommentElement(comment) {
+  const commentElement = document.createElement('li');
+  commentElement.className = 'comment';
+
+  const titleElement = document.createElement('span');
+  titleElement.innerText = comment.comment;
+  commentElement.appendChild(titleElement);
+  return commentElement;
+}
+
+google.charts.setOnLoadCallback(drawChart);
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+    ['Time Spent Training(days)', 'Mile Time'],
+    [3, 14], [5, 10], [7, 7], [9, 5], [11, 4]
+ ]);
+
+  var options = {
+    title: 'Mile time by number of days trained',
+    hAxis: {title: 'Days', minValue: 0, maxValue: 3},
+    vAxis: {title: 'Time', minValue: 0, maxValue: 2100},
+    trendlines: {
+      0: {
+        type: 'exponential',
+        visibleInLegend: true,
+      }
+    }
+  };
+
+  var chart = new google.visualization.ScatterChart(document.getElementById('chart-container'));
+  chart.draw(data, options);
+}
+
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+  const data = new google.visualization.DataTable();
+  data.addColumn('string', 'Player');
+  data.addColumn('number', 'All Star Appearences');
+        data.addRows([
+          ['Kobe', 16],
+          ['Lebron', 14],
+          ['Luka', 1]
+        ]);
+
+  const options = {
+    'title': 'All Star Appearences',
+    'width':500,
+    'height':400
+  };
+
+  const chart = new google.visualization.PieChart(
+      document.getElementById('chart-container'));
+  chart.draw(data, options);
+}

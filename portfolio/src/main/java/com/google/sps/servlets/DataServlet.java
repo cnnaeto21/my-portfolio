@@ -14,9 +14,18 @@
 
 package com.google.sps.servlets;
 
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.sps.data.Comment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.Gson;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,15 +35,92 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   private List<String> names;
+
+  private List<String> messages;
+  private List<Comment> allComments;
+
   @Override
   public void init(){
     names = new ArrayList<>();
     names.add("Obi");
+
+    messages = new ArrayList<>();
+    messages.add("Hello! How are you");
+
+    allComments = new ArrayList<>();
   }
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String name = names.get(0);
-    response.setContentType("text/html;");
-    response.getWriter().println("Hello " + name + ". Welcome to JavaServlets");
+
+    Query query = new Query("Comment");
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      String whatSaid = (String) entity.getProperty("Comment");
+      String mood = (String) entity.getProperty("Mood");
+      //long timestamp = (Long) entity.getProperty("timestamp");
+      
+      Comment newComment = new Comment(id, whatSaid, mood);
+      allComments.add(newComment);
+    }
+    response.getWriter().println(allComments);
+
+
+    String json = convertToJsonUsingGson(allComments);
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
+
+    private LinkedHashMap<Integer, Integer> bigfootSightings = new LinkedHashMap<>();
+
+  @Override
+  public void init() {
+    Scanner scanner = new Scanner(getServletContext().getResourceAsStream(
+        "/WEB-INF/pit---april-2018-scheduled-traffic-report-reformatted.csv"));
+    while (scanner.hasNextLine()) {
+      String line = scanner.nextLine();
+      String[] cells = line.split(",");
+
+      Integer year = Integer.valueOf(cells[0]);
+      Integer sightings = Integer.valueOf(cells[1]);
+
+      DataServlet.put(year, sightings);
+    }
+    scanner.close();
+  }
+
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setContentType("application/json");
+    Gson gson = new Gson();
+    String json = gson.toJson(bigfootSightings);
+    response.getWriter().println(json);
+  }
+}
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      String word = request.getParameter("Comment");
+      String mood = request.getParameter("Mood");
+      
+      Entity commentEntity = new Entity("Comment");
+      commentEntity.setProperty("Comment", word);
+      commentEntity.setProperty("Mood", mood);
+
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      datastore.put(commentEntity);
+
+      response.sendRedirect("/index.html");
+  }
+
+
+  static String convertToJsonUsingGson( List<Comment> words) {
+    Gson gson = new Gson();
+    String json = gson.toJson(words);
+    return json;
   }
 }
